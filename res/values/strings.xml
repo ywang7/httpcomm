@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">httpcomm</string>
+    <string name="action_settings">Settings</string>
+    <string name="title">http tests</string>
+    <string name="welcome">Welcome!\nPlease press button!</string>
+    <string name="func1">Add Friend</string>
+    <string name="func2">Delete Friend</string>
+    <string name="func3">Get Data</string>
+    <string name="func4">Write data</string>
+    <string name="func5">Delete my data</string>
+    
+
+</resources>
