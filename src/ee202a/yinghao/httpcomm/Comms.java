@@ -60,7 +60,7 @@ public class Comms {
 				// convert content stream to a String
 				String resultString= convertStreamToString(instream);
 				instream.close();
-				resultString = resultString.substring(1,resultString.length()-1); // remove wrapping "[" and "]"
+				//resultString = resultString.substring(1,resultString.length()-1); // remove wrapping "[" and "]"
 
 				//Transform the String into a JSONArray
 				JSONArray jsonArrayRecv = new JSONArray(resultString);
