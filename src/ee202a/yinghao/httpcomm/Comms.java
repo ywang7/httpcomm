@@ -15,6 +15,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.util.Log;
@@ -24,7 +25,7 @@ public class Comms {
 	private static final String serverURL="http://128.97.93.201:22050";
 	private static final String TAG = "Comms";
 
-	public static int sendHttpPost(String URL, JSONObject jsonObjSend) {
+	public static JSONArray sendHttpPost(String URL, JSONObject jsonObjSend) {
 
 		try {
 			DefaultHttpClient httpclient = new DefaultHttpClient();
@@ -61,12 +62,13 @@ public class Comms {
 				instream.close();
 				resultString = resultString.substring(1,resultString.length()-1); // remove wrapping "[" and "]"
 
-				// Transform the String into a JSONObject
-				//JSONObject jsonObjRecv = new JSONObject(resultString);
+				//Transform the String into a JSONArray
+				JSONArray jsonArrayRecv = new JSONArray(resultString);
 				// Raw DEBUG output of our received JSON object:
 				Log.i(TAG,"Response="+resultString);
 
 				response.getStatusLine().getStatusCode();
+				return jsonArrayRecv;
 			} 
 
 		}
@@ -76,7 +78,8 @@ public class Comms {
 			// For now we just print the stack trace.
 			e.printStackTrace();
 		}
-		return 0;
+		return null;
+		
 	}
 
 	public static JSONObject sendHttpGet(String URL) {
@@ -204,62 +207,95 @@ public class Comms {
 		
 	}
 	
-	public static boolean addFriend(JSONObject friendinfo) {
-		Log.i("addfriend","begins");
-		boolean finalresult = false;
-		int statusresult=sendHttpPost(serverURL+"/addfriend", friendinfo);
-		if((statusresult>=200) & (statusresult<300))
-			finalresult = true;
-		
-		Log.i("addfriend","ends");
+	public static JSONArray userReg(JSONObject info) {
+		Log.i(TAG+"userReg","begins");
+		JSONArray finalresult = sendHttpPost(serverURL+"/userreg", info);
+		if(finalresult == null)
+			Log.i(TAG+"userReg","response is null");
+		else 
+			Log.i(TAG+"userReg",finalresult.toString());
+		Log.i(TAG+"userReg","ends");
+		return finalresult;
+	}
+	
+	public static JSONArray userLogin(JSONObject info) {
+		Log.i(TAG+"userLogin","begins");
+		JSONArray finalresult = sendHttpPost(serverURL+"/userlogin", info);
+		if(finalresult == null)
+			Log.i(TAG+"userLogin","response is null");
+		else 
+			Log.i(TAG+"userLogin",finalresult.toString());
+		Log.i(TAG+"userReg","ends");
+		return finalresult;
+	}
+	
+	public static JSONArray addFriend(JSONObject friendinfo) {
+		Log.i(TAG+"addfriend","begins");
+		JSONArray finalresult = sendHttpPost(serverURL+"/addfriend", friendinfo);
+		if(finalresult == null)
+			Log.i(TAG+"addfriend","response is null");
+		else 
+			Log.i(TAG+"addfriend",finalresult.toString());
+		Log.i(TAG+"addfriend","ends");
 		
 		return finalresult;
 	}
 	
-	public static boolean deleteFriend(JSONObject friendinfo) {
-		Log.i("deletefriend","begins");
-		boolean finalresult = false;
-		int statusresult=sendHttpPost(serverURL+"/deletefriend", friendinfo);
-		if((statusresult>=200) & (statusresult<300))
-			finalresult = true;
-		
-		Log.i("deletefriend","ends");
-		
-		return finalresult;
-	}
-	
-	public static JSONObject getData() {
-		Log.i("getData","begins");
-		
-		JSONObject result=sendHttpGet(serverURL+"/getdata");
-		if(result == null)
-			Log.v("getData","Error");
-		
-		Log.i("getData","ends");
-		
-		return result;
-	}
-	
-	public static boolean writeData(JSONObject data) {
-		Log.i("writeData","begins");
-		boolean finalresult = false;
-		int statusresult=sendHttpPost(serverURL+"/writedata", data);
-		if((statusresult>=200) & (statusresult<300))
-			finalresult = true;
-		
-		Log.i("writeData","ends");
+	public static JSONArray deleteFriend(JSONObject friendinfo) {
+		Log.i(TAG+"deletefriend","begins");
+		JSONArray finalresult = sendHttpPost(serverURL+"/deletefriend", friendinfo);
+		if(finalresult == null)
+			Log.i(TAG+"deletefriend","response is null");
+		else 
+			Log.i(TAG+"deletefriend",finalresult.toString());
+		Log.i(TAG+"deletefriend","ends");
 		
 		return finalresult;
 	}
 	
-	public static boolean deletemyData(JSONObject deleteid) {
-		Log.i("deletemyData","begins");
-		boolean finalresult = false;
-		int statusresult=sendHttpPost(serverURL+"/deletemydata", deleteid);
-		if((statusresult>=200) & (statusresult<300))
-			finalresult = true;
+	public static JSONArray getData(JSONObject info) {
+		Log.i(TAG+"getData","begins");
+		JSONArray finalresult = sendHttpPost(serverURL+"/getdata", info);
+		if(finalresult == null)
+			Log.i(TAG+"getdata","response is null");
+		else 
+			Log.i(TAG+"getdata",finalresult.toString());
+		Log.i(TAG+"getData","ends");
+		return finalresult;
+	}
+	
+	public static JSONArray writeArriveData(JSONObject data) {
+		Log.i(TAG+"writeArriveData","begins");
+		JSONArray finalresult = sendHttpPost(serverURL+"/writearrivedata", data);
+		if(finalresult == null)
+			Log.i(TAG+"writeArriveData","response is null");
+		else 
+			Log.i(TAG+"writeArriveData",finalresult.toString());
+		Log.i(TAG+"writeArriveData","ends");
 		
-		Log.i("deletemyData","ends");
+		return finalresult;
+	}
+	
+	public static JSONArray writeLeaveData(JSONObject data) {
+		Log.i(TAG+"writeLeaveData","begins");
+		JSONArray finalresult = sendHttpPost(serverURL+"/writeleavedata", data);
+		if(finalresult == null)
+			Log.i(TAG+"writeLeaveData","response is null");
+		else 
+			Log.i(TAG+"writeLeaveData",finalresult.toString());
+		Log.i(TAG+"writeLeaveData","ends");
+		
+		return finalresult;
+	}
+	
+	public static JSONArray deletemyData(JSONObject deleteid) {
+		Log.i(TAG+"deletemyData","begins");
+		JSONArray finalresult = sendHttpPost(serverURL+"/deletemydata", deleteid);
+		if(finalresult == null)
+			Log.i(TAG+"deletemydata","response is null");
+		else 
+			Log.i(TAG+"deletemydata",finalresult.toString());
+		Log.i(TAG+"deletemyData","ends");
 		
 		return finalresult;
 	}

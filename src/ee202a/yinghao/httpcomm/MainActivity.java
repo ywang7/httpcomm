@@ -89,7 +89,7 @@ public class MainActivity extends Activity {
 				Thread mythread= new Thread() {
 					@Override
 					public void run(){
-						Comms.getData();
+						Comms.getData(jsob);
 					}
 				};
 				mythread.start();
@@ -106,7 +106,8 @@ public class MainActivity extends Activity {
 				Thread mythread= new Thread() {
 					@Override
 					public void run(){
-						Comms.writeData(jsob);
+						Comms.writeArriveData(jsob);
+						Comms.writeLeaveData(jsob);
 						
 					}
 				};
